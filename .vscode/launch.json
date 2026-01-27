@@ -1,0 +1,248 @@
+{
+  // Flutter launch configurations for game1
+  // Use Cmd+Shift+D (macOS) or Ctrl+Shift+D (Windows/Linux) to open Run and Debug
+  "version": "0.2.0",
+  "configurations": [
+    // ============================================
+    // ANDROID CONFIGURATIONS
+    // ============================================
+    {
+      "name": "Android (Debug)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "debug",
+      "deviceId": "android"
+    },
+    {
+      "name": "Android (Profile)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "profile",
+      "deviceId": "android"
+    },
+    {
+      "name": "Android (Release)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "release",
+      "deviceId": "android"
+    },
+
+    // ============================================
+    // iOS CONFIGURATIONS
+    // ============================================
+    {
+      "name": "iOS (Debug)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "debug",
+      "deviceId": "ios"
+    },
+    {
+      "name": "iOS (Profile)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "profile",
+      "deviceId": "ios"
+    },
+    {
+      "name": "iOS (Release)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "release",
+      "deviceId": "ios"
+    },
+
+    // ============================================
+    // macOS CONFIGURATIONS
+    // ============================================
+    {
+      "name": "macOS (Debug)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "debug",
+      "deviceId": "macos"
+    },
+    {
+      "name": "macOS (Profile)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "profile",
+      "deviceId": "macos"
+    },
+    {
+      "name": "macOS (Release)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "release",
+      "deviceId": "macos"
+    },
+
+    // ============================================
+    // WINDOWS CONFIGURATIONS
+    // ============================================
+    {
+      "name": "Windows (Debug)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "debug",
+      "deviceId": "windows"
+    },
+    {
+      "name": "Windows (Profile)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "profile",
+      "deviceId": "windows"
+    },
+    {
+      "name": "Windows (Release)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "release",
+      "deviceId": "windows"
+    },
+
+    // ============================================
+    // LINUX CONFIGURATIONS
+    // ============================================
+    {
+      "name": "Linux (Debug)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "debug",
+      "deviceId": "linux"
+    },
+    {
+      "name": "Linux (Profile)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "profile",
+      "deviceId": "linux"
+    },
+    {
+      "name": "Linux (Release)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "release",
+      "deviceId": "linux"
+    },
+
+    // ============================================
+    // WEB CONFIGURATIONS
+    // ============================================
+    {
+      "name": "Web (Chrome - Debug)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "debug",
+      "deviceId": "chrome"
+    },
+    {
+      "name": "Web (Chrome - Profile)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "profile",
+      "deviceId": "chrome"
+    },
+    {
+      "name": "Web (Chrome - Release)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "release",
+      "deviceId": "chrome"
+    },
+    {
+      "name": "Web (Edge - Debug)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "debug",
+      "deviceId": "edge"
+    },
+    {
+      "name": "Web (Server - Debug)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "debug",
+      "deviceId": "web-server",
+      "args": [
+        "--web-port=8080"
+      ]
+    },
+
+    // ============================================
+    // SPECIAL CONFIGURATIONS
+    // ============================================
+    {
+      "name": "Current Device (Debug)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "debug"
+      // Uses the currently selected device in VS Code status bar
+    },
+    {
+      "name": "Current Device (Profile)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "Current Device (Release)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "release"
+    },
+    {
+      "name": "Debug with Dart DevTools",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "debug",
+      "openDevTools": "flutter"
+    },
+    {
+      "name": "Profile with Performance Overlay",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "profile",
+      "args": [
+        "--show-performance-overlay"
+      ]
+    }
+  ],
+  "compounds": [
+    // Run on multiple platforms simultaneously for testing
+    {
+      "name": "Android + iOS (Debug)",
+      "configurations": ["Android (Debug)", "iOS (Debug)"]
+    },
+    {
+      "name": "All Desktop (Debug)",
+      "configurations": ["macOS (Debug)", "Windows (Debug)", "Linux (Debug)"]
+    }
+  ]
+}
