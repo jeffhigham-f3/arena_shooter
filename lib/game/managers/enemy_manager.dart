@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flame/components.dart';
 
-import '../../config/game_config.dart';
 import '../components/chaser_enemy.dart';
 import '../components/enemy.dart';
 import '../components/shooter_enemy.dart';
@@ -58,8 +57,10 @@ class EnemyManager extends Component with HasGameReference<MyGame> {
 
   /// Get a random position along the edge of the game area
   Vector2 _getRandomEdgePosition() {
-    final halfWidth = GameConfig.gameWidth / 2;
-    final halfHeight = GameConfig.gameHeight / 2;
+    final worldWidth = game.worldWidth;
+    final worldHeight = game.worldHeight;
+    final halfWidth = worldWidth / 2;
+    final halfHeight = worldHeight / 2;
     
     // Choose a random edge (0 = top, 1 = right, 2 = bottom, 3 = left)
     final edge = _random.nextInt(4);
@@ -68,21 +69,21 @@ class EnemyManager extends Component with HasGameReference<MyGame> {
     
     switch (edge) {
       case 0: // Top
-        x = _random.nextDouble() * GameConfig.gameWidth - halfWidth;
+        x = _random.nextDouble() * worldWidth - halfWidth;
         y = -halfHeight;
         break;
       case 1: // Right
         x = halfWidth;
-        y = _random.nextDouble() * GameConfig.gameHeight - halfHeight;
+        y = _random.nextDouble() * worldHeight - halfHeight;
         break;
       case 2: // Bottom
-        x = _random.nextDouble() * GameConfig.gameWidth - halfWidth;
+        x = _random.nextDouble() * worldWidth - halfWidth;
         y = halfHeight;
         break;
       case 3: // Left
       default:
         x = -halfWidth;
-        y = _random.nextDouble() * GameConfig.gameHeight - halfHeight;
+        y = _random.nextDouble() * worldHeight - halfHeight;
         break;
     }
     

@@ -32,6 +32,7 @@ class _MainMenuState extends State<MainMenu> {
         ),
       ),
       child: SafeArea(
+        bottom: false, // Don't add bottom padding - let gradient extend to edge
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 20),
@@ -40,83 +41,82 @@ class _MainMenuState extends State<MainMenu> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Game title
+                  // Game title - TEMP: Added v2 to verify code update
                   const Text(
                     'ARENA',
                     style: TextStyle(
                       color: Colors.cyan,
-                      fontSize: 56,
+                      fontSize: 48, // Reduced from 56 for narrow screens
                       fontWeight: FontWeight.bold,
-                      letterSpacing: 10,
-                      shadows: [
-                        Shadow(
-                          color: Colors.cyan,
-                          blurRadius: 20,
-                        ),
-                      ],
+                      letterSpacing: 8, // Reduced from 10
+                      shadows: [Shadow(color: Colors.cyan, blurRadius: 20)],
                     ),
                   ),
                   const Text(
                     'SHOOTER',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 36,
+                      fontSize: 28, // Reduced from 36 for narrow screens
                       fontWeight: FontWeight.w300,
-                      letterSpacing: 12,
+                      letterSpacing: 8, // Reduced from 12
                     ),
                   ),
                   const SizedBox(height: 30),
-                  
+
                   // Difficulty selection
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.black38,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Colors.white24, width: 1),
-                    ),
-                    child: Column(
-                      children: [
-                        const Text(
-                          'SELECT DIFFICULTY',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 2,
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 350),
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.black38,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Colors.white24, width: 1),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                            'SELECT DIFFICULTY',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 2,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 12),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            _buildDifficultyButton(
-                              Difficulty.easy,
-                              'EASY',
-                              Colors.green,
-                              'More health',
-                            ),
-                            const SizedBox(width: 8),
-                            _buildDifficultyButton(
-                              Difficulty.normal,
-                              'NORMAL',
-                              Colors.amber,
-                              'Balanced',
-                            ),
-                            const SizedBox(width: 8),
-                            _buildDifficultyButton(
-                              Difficulty.hard,
-                              'HARD',
-                              Colors.red,
-                              'Less health',
-                            ),
-                          ],
-                        ),
-                      ],
+                          const SizedBox(height: 12),
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: [
+                              _buildDifficultyButton(
+                                Difficulty.easy,
+                                'EASY',
+                                Colors.green,
+                                'More health',
+                              ),
+                              _buildDifficultyButton(
+                                Difficulty.normal,
+                                'NORMAL',
+                                Colors.amber,
+                                'Balanced',
+                              ),
+                              _buildDifficultyButton(
+                                Difficulty.hard,
+                                'HARD',
+                                Colors.red,
+                                'Less health',
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 24),
-                  
+
                   // Start button
                   SizedBox(
                     width: 220,
@@ -142,22 +142,26 @@ class _MainMenuState extends State<MainMenu> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  
+
                   // Controls hint
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.black26,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
+                    child: const Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 16,
+                      runSpacing: 4,
                       children: [
                         Text(
                           'WASD/Arrows: Move',
                           style: TextStyle(color: Colors.white54, fontSize: 12),
                         ),
-                        SizedBox(width: 16),
                         Text(
                           'SPACE: Shoot',
                           style: TextStyle(color: Colors.white54, fontSize: 12),
@@ -181,7 +185,7 @@ class _MainMenuState extends State<MainMenu> {
     String description,
   ) {
     final isSelected = _selectedDifficulty == difficulty;
-    
+
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -227,7 +231,7 @@ class _MainMenuState extends State<MainMenu> {
   void _startGame() {
     // Set the selected difficulty
     GameConfig.setDifficulty(_selectedDifficulty);
-    
+
     // Start the game
     widget.game.startGame();
   }

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../config/game_config.dart';
 import 'components/bullet.dart';
 import 'components/player.dart';
+import 'components/touch_controls.dart';
 import 'managers/enemy_manager.dart';
 import 'managers/wave_manager.dart';
 
@@ -18,14 +19,24 @@ class MyGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDe
   MyGame()
       : super(
           camera: CameraComponent.withFixedResolution(
-            width: GameConfig.gameWidth,
-            height: GameConfig.gameHeight,
+            width: GameConfig.gameWidth,  // Dynamic width based on screen
+            height: GameConfig.gameHeight, // Fixed height
           ),
         );
+  
+  /// Get current game world width (for bounds checking)
+  double get worldWidth => GameConfig.gameWidth;
+  
+  /// Get current game world height (for bounds checking)
+  double get worldHeight => GameConfig.gameHeight;
 
   late Player player;
   late EnemyManager enemyManager;
   late WaveManager waveManager;
+  TouchControls? touchControls;
+  
+  /// Whether touch controls are enabled
+  bool get hasTouchControls => touchControls != null;
   
   /// Current game state
   GameState _gameState = GameState.menu;
@@ -72,6 +83,11 @@ class MyGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDe
     // Add wave manager
     waveManager = WaveManager(enemyManager: enemyManager);
     add(waveManager);
+    
+    // Add touch controls (always add them - they work on web/mobile with touch)
+    // On desktop with only keyboard, joysticks will just not be used
+    touchControls = TouchControls();
+    add(touchControls!);
 
     // Debug mode if enabled
     if (GameConfig.showHitboxes) {
@@ -80,6 +96,17 @@ class MyGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDe
     
     // Start paused on main menu
     pauseEngine();
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    
+    // Update player with joystick input if touch controls exist
+    if (touchControls != null && _gameState == GameState.playing) {
+      player.setJoystickMove(touchControls!.moveDirection);
+      player.setJoystickAim(touchControls!.aimDirection, touchControls!.isShooting);
+    }
   }
   
   /// Start the game from the main menu

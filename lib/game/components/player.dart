@@ -48,6 +48,26 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
   /// Direction player is aiming (for shooting)
   final Vector2 _aimDirection = Vector2(1, 0); // Default: right
 
+  /// Joystick input for movement (set by touch controls)
+  Vector2 _joystickMoveInput = Vector2.zero();
+  
+  /// Joystick input for aiming (set by touch controls)
+  Vector2 _joystickAimInput = Vector2.zero();
+  
+  /// Whether shooting via joystick
+  bool _joystickShooting = false;
+
+  /// Set joystick movement input (called from touch controls)
+  void setJoystickMove(Vector2 direction) {
+    _joystickMoveInput = direction;
+  }
+
+  /// Set joystick aim input and shooting state (called from touch controls)
+  void setJoystickAim(Vector2 direction, bool shooting) {
+    _joystickAimInput = direction;
+    _joystickShooting = shooting;
+  }
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();
@@ -71,7 +91,7 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
       _invincibilityTimer -= dt;
     }
 
-    // Calculate velocity based on pressed keys
+    // Calculate velocity based on keyboard input
     _velocity.setZero();
 
     if (_keysPressed.contains(LogicalKeyboardKey.keyW) ||
@@ -91,20 +111,40 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
       _velocity.x += 1;
     }
 
-    // Normalize diagonal movement and update aim direction
-    if (_velocity.length > 0) {
+    // Add joystick movement input (if any)
+    if (_joystickMoveInput.length > 0.1) {
+      _velocity.setFrom(_joystickMoveInput);
+    }
+
+    // Normalize diagonal movement
+    if (_velocity.length > 1) {
       _velocity.normalize();
-      _aimDirection.setFrom(_velocity);
+    }
+
+    // Update aim direction based on input
+    if (_velocity.length > 0) {
+      // If moving with keyboard (no joystick aim), aim in move direction
+      if (_joystickAimInput.length < 0.1) {
+        _aimDirection.setFrom(_velocity);
+        _aimDirection.normalize();
+      }
+    }
+
+    // Joystick aim overrides movement-based aim
+    if (_joystickAimInput.length > 0.1) {
+      _aimDirection.setFrom(_joystickAimInput);
+      _aimDirection.normalize();
     }
 
     // Apply movement
     position += _velocity * GameConfig.playerSpeed * dt;
 
-    // Keep player within game bounds
-    _clampPosition();
+    // Wrap player position (Asteroids-style)
+    _wrapPosition();
 
-    // Handle shooting
-    if (_keysPressed.contains(LogicalKeyboardKey.space) && _shootCooldown <= 0) {
+    // Handle shooting (keyboard spacebar or joystick aim)
+    final wantsToShoot = _keysPressed.contains(LogicalKeyboardKey.space) || _joystickShooting;
+    if (wantsToShoot && _shootCooldown <= 0) {
       _shoot();
     }
   }
@@ -209,22 +249,29 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
     _invincibilityTimer = 0;
     _shootCooldown = 0;
     _aimDirection.setValues(1, 0);
+    _joystickMoveInput = Vector2.zero();
+    _joystickAimInput = Vector2.zero();
+    _joystickShooting = false;
   }
 
-  /// Clamp player position to stay within game bounds
-  void _clampPosition() {
-    final halfWidth = size.x / 2;
-    final halfHeight = size.y / 2;
-    final gameHalfWidth = GameConfig.gameWidth / 2;
-    final gameHalfHeight = GameConfig.gameHeight / 2;
+  /// Wrap player position to opposite side (Asteroids-style)
+  void _wrapPosition() {
+    final gameHalfWidth = game.worldWidth / 2;
+    final gameHalfHeight = game.worldHeight / 2;
+    final buffer = size.x / 2; // Small buffer so player fully exits before appearing
 
-    position.x = position.x.clamp(
-      -gameHalfWidth + halfWidth,
-      gameHalfWidth - halfWidth,
-    );
-    position.y = position.y.clamp(
-      -gameHalfHeight + halfHeight,
-      gameHalfHeight - halfHeight,
-    );
+    // Wrap horizontally
+    if (position.x < -gameHalfWidth - buffer) {
+      position.x = gameHalfWidth + buffer;
+    } else if (position.x > gameHalfWidth + buffer) {
+      position.x = -gameHalfWidth - buffer;
+    }
+
+    // Wrap vertically
+    if (position.y < -gameHalfHeight - buffer) {
+      position.y = gameHalfHeight + buffer;
+    } else if (position.y > gameHalfHeight + buffer) {
+      position.y = -gameHalfHeight - buffer;
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'config/game_config.dart';
 import 'game/my_game.dart';
@@ -10,6 +11,16 @@ import 'game/overlays/pause_menu.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Lock to landscape orientation for better gameplay
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+  ]);
+  
+  // Hide system UI for immersive gameplay
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  
   runApp(const MyApp());
 }
 
@@ -41,50 +52,67 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
-  late final MyGame _game;
-
-  @override
-  void initState() {
-    super.initState();
-    _game = MyGame();
-  }
+  MyGame? _game;
+  double? _lastWidth;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Center(
-        child: FittedBox(
-          child: SizedBox(
-            width: GameConfig.gameWidth,
-            height: GameConfig.gameHeight,
-            child: GameWidget<MyGame>(
-              game: _game,
-              // Initial overlays to display
-              initialActiveOverlays: const ['MainMenu'],
-              // Define all available overlays
-              overlayBuilderMap: {
-                'MainMenu': (context, game) => MainMenu(game: game),
-                'HUD': (context, game) => HUD(game: game),
-                'PauseMenu': (context, game) => PauseMenu(game: game),
-                'GameOver': (context, game) => GameOver(game: game),
-              },
-              // Loading screen while game initializes
-              loadingBuilder: (context) => const Center(
-                child: CircularProgressIndicator(
-                  color: Color(0xFF4CAF50),
-                ),
-              ),
-              // Error display
-              errorBuilder: (context, error) => Center(
-                child: Text(
-                  'Error: $error',
-                  style: const TextStyle(color: Colors.red),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          // Calculate game width based on screen aspect ratio
+          final screenWidth = constraints.maxWidth;
+          final screenHeight = constraints.maxHeight;
+          final gameWidth = GameConfig.calculateGameWidth(screenWidth, screenHeight);
+          
+          // Only recreate game if width changed significantly (avoids rebuild loops)
+          if (_game == null || (_lastWidth != null && (gameWidth - _lastWidth!).abs() > 10)) {
+            GameConfig.setGameWidth(gameWidth);
+            _game = MyGame();
+            _lastWidth = gameWidth;
+          } else if (_lastWidth == null) {
+            GameConfig.setGameWidth(gameWidth);
+            _lastWidth = gameWidth;
+          }
+          
+          return SizedBox(
+            width: screenWidth,
+            height: screenHeight,
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: SizedBox(
+                width: GameConfig.gameWidth,
+                height: GameConfig.gameHeight,
+                child: GameWidget<MyGame>(
+                  game: _game!,
+                  // Initial overlays to display
+                  initialActiveOverlays: const ['MainMenu'],
+                  // Define all available overlays
+                  overlayBuilderMap: {
+                    'MainMenu': (context, game) => MainMenu(game: game),
+                    'HUD': (context, game) => HUD(game: game),
+                    'PauseMenu': (context, game) => PauseMenu(game: game),
+                    'GameOver': (context, game) => GameOver(game: game),
+                  },
+                  // Loading screen while game initializes
+                  loadingBuilder: (context) => const Center(
+                    child: CircularProgressIndicator(
+                      color: Color(0xFF4CAF50),
+                    ),
+                  ),
+                  // Error display
+                  errorBuilder: (context, error) => Center(
+                    child: Text(
+                      'Error: $error',
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

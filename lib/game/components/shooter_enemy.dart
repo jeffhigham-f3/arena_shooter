@@ -81,8 +81,8 @@ class ShooterEnemy extends Enemy {
   void _clampPosition() {
     final halfWidth = size.x / 2;
     final halfHeight = size.y / 2;
-    final gameHalfWidth = GameConfig.gameWidth / 2;
-    final gameHalfHeight = GameConfig.gameHeight / 2;
+    final gameHalfWidth = game.worldWidth / 2;
+    final gameHalfHeight = game.worldHeight / 2;
 
     position.x = position.x.clamp(
       -gameHalfWidth + halfWidth,

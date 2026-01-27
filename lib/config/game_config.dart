@@ -82,8 +82,22 @@ class GameConfig {
 
   // Game window settings
   static const String gameTitle = 'Arena Shooter';
-  static const double gameWidth = 800;
-  static const double gameHeight = 600;
+  static const double gameHeight = 600; // Fixed height
+  static double _gameWidth = 800; // Dynamic width based on screen aspect ratio
+  
+  /// Get current game width (dynamic based on screen)
+  static double get gameWidth => _gameWidth;
+  
+  /// Set game width based on screen aspect ratio
+  static void setGameWidth(double width) {
+    _gameWidth = width;
+  }
+  
+  /// Calculate game width from screen dimensions
+  static double calculateGameWidth(double screenWidth, double screenHeight) {
+    final aspectRatio = screenWidth / screenHeight;
+    return gameHeight * aspectRatio;
+  }
 
   // Player settings
   static const double playerSpeed = 200.0;
@@ -97,6 +111,7 @@ class GameConfig {
   static const double playerFireRate = 5.0; // shots per second
   static const double enemyFireRate = 1.0; // shots per second
   static const int bulletDamage = 50; // damage per bullet hit
+  static const double bulletLifespan = 2.0; // seconds before bullet disappears
 
   // Base chaser enemy settings (before difficulty multipliers)
   static const double _baseChaserSpeed = 120.0;

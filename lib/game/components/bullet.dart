@@ -18,6 +18,12 @@ class Bullet extends PositionComponent with CollisionCallbacks, HasGameReference
   
   /// Damage dealt by this bullet
   final int damage;
+  
+  /// How long the bullet lives before disappearing (seconds)
+  static double get maxLifespan => GameConfig.bulletLifespan;
+  
+  /// Time this bullet has been alive
+  double _lifespan = 0;
 
   Bullet({
     required Vector2 position,
@@ -42,13 +48,18 @@ class Bullet extends PositionComponent with CollisionCallbacks, HasGameReference
   void update(double dt) {
     super.update(dt);
     
+    // Track lifespan and remove if expired
+    _lifespan += dt;
+    if (_lifespan >= maxLifespan) {
+      removeFromParent();
+      return;
+    }
+    
     // Move bullet in its direction
     position += direction * GameConfig.bulletSpeed * dt;
     
-    // Remove if off screen
-    if (_isOffScreen()) {
-      removeFromParent();
-    }
+    // Wrap position (Asteroids-style)
+    _wrapPosition();
   }
 
   @override
@@ -101,14 +112,24 @@ class Bullet extends PositionComponent with CollisionCallbacks, HasGameReference
     }
   }
 
-  /// Check if bullet is outside the game bounds
-  bool _isOffScreen() {
-    final halfWidth = GameConfig.gameWidth / 2;
-    final halfHeight = GameConfig.gameHeight / 2;
-    
-    return position.x < -halfWidth - size.x ||
-           position.x > halfWidth + size.x ||
-           position.y < -halfHeight - size.y ||
-           position.y > halfHeight + size.y;
+  /// Wrap bullet position to opposite side (Asteroids-style)
+  void _wrapPosition() {
+    final halfWidth = game.worldWidth / 2;
+    final halfHeight = game.worldHeight / 2;
+    final buffer = size.x / 2;
+
+    // Wrap horizontally
+    if (position.x < -halfWidth - buffer) {
+      position.x = halfWidth + buffer;
+    } else if (position.x > halfWidth + buffer) {
+      position.x = -halfWidth - buffer;
+    }
+
+    // Wrap vertically
+    if (position.y < -halfHeight - buffer) {
+      position.y = halfHeight + buffer;
+    } else if (position.y > halfHeight + buffer) {
+      position.y = -halfHeight - buffer;
+    }
   }
 }
