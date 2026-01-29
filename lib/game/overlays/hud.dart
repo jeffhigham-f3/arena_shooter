@@ -37,93 +37,102 @@ class _HUDState extends State<HUD> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Top row: Score, Wave, Pause button
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Left side: Score and Wave
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Score display
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.black54,
-                      borderRadius: BorderRadius.circular(8),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Top row: Score, Wave, Pause button
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Left side: Score and Wave
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Score display
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        'Score: ${widget.game.score}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                    child: Text(
-                      'Score: ${widget.game.score}',
-                      style: const TextStyle(
+                    const SizedBox(height: 8),
+                    // Wave display
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        'Wave: ${widget.game.waveManager.currentWave}',
+                        style: const TextStyle(
+                          color: Colors.amber,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                _buildHealthBar(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    // Pause button
+                    IconButton(
+                      onPressed: widget.game.pauseGame,
+                      icon: const Icon(
+                        Icons.pause_circle_filled,
                         color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                        size: 40,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  // Wave display
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.black54,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      'Wave: ${widget.game.waveManager.currentWave}',
-                      style: const TextStyle(
-                        color: Colors.amber,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                    // Difficulty display
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        widget.game.difficultyName.toUpperCase(),
+                        style: TextStyle(
+                          color: _getDifficultyColor(),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              // Right side: Difficulty and Pause button
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  // Pause button
-                  IconButton(
-                    onPressed: widget.game.pauseGame,
-                    icon: const Icon(
-                      Icons.pause_circle_filled,
-                      color: Colors.white,
-                      size: 40,
-                    ),
-                  ),
-                  // Difficulty display
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.black54,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      widget.game.difficultyName.toUpperCase(),
-                      style: TextStyle(
-                        color: _getDifficultyColor(),
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const Spacer(),
-          // Bottom: Health bar
-          _buildHealthBar(),
-        ],
+                  ],
+                ),
+              ],
+            ),
+            const Spacer(),
+          ],
+        ),
       ),
     );
   }
@@ -144,7 +153,7 @@ class _HUDState extends State<HUD> {
   Widget _buildHealthBar() {
     final player = widget.game.player;
     final healthPercent = player.health / player.maxHealth;
-    
+
     // Health bar color based on health level
     Color healthColor;
     if (healthPercent > 0.6) {

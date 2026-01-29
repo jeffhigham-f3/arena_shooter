@@ -11,16 +11,16 @@ import 'game/overlays/pause_menu.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Lock to landscape orientation for better gameplay
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
   ]);
-  
+
   // Hide system UI for immersive gameplay
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-  
+
   runApp(const MyApp());
 }
 
@@ -64,10 +64,14 @@ class _GamePageState extends State<GamePage> {
           // Calculate game width based on screen aspect ratio
           final screenWidth = constraints.maxWidth;
           final screenHeight = constraints.maxHeight;
-          final gameWidth = GameConfig.calculateGameWidth(screenWidth, screenHeight);
-          
+          final gameWidth = GameConfig.calculateGameWidth(
+            screenWidth,
+            screenHeight,
+          );
+
           // Only recreate game if width changed significantly (avoids rebuild loops)
-          if (_game == null || (_lastWidth != null && (gameWidth - _lastWidth!).abs() > 10)) {
+          if (_game == null ||
+              (_lastWidth != null && (gameWidth - _lastWidth!).abs() > 10)) {
             GameConfig.setGameWidth(gameWidth);
             _game = MyGame();
             _lastWidth = gameWidth;
@@ -75,7 +79,7 @@ class _GamePageState extends State<GamePage> {
             GameConfig.setGameWidth(gameWidth);
             _lastWidth = gameWidth;
           }
-          
+
           return SizedBox(
             width: screenWidth,
             height: screenHeight,
@@ -86,9 +90,7 @@ class _GamePageState extends State<GamePage> {
                 height: GameConfig.gameHeight,
                 child: GameWidget<MyGame>(
                   game: _game!,
-                  // Initial overlays to display
                   initialActiveOverlays: const ['MainMenu'],
-                  // Define all available overlays
                   overlayBuilderMap: {
                     'MainMenu': (context, game) => MainMenu(game: game),
                     'HUD': (context, game) => HUD(game: game),
@@ -97,9 +99,7 @@ class _GamePageState extends State<GamePage> {
                   },
                   // Loading screen while game initializes
                   loadingBuilder: (context) => const Center(
-                    child: CircularProgressIndicator(
-                      color: Color(0xFF4CAF50),
-                    ),
+                    child: CircularProgressIndicator(color: Color(0xFF4CAF50)),
                   ),
                   // Error display
                   errorBuilder: (context, error) => Center(
