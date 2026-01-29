@@ -60,6 +60,7 @@ Arena Shooter is an action-packed survival game where you control a player chara
    ```
 
 3. **Verify Flutter setup**:
+
    ```bash
    flutter doctor
    ```
@@ -283,6 +284,7 @@ Contributions are welcome! Please follow these guidelines:
 - Built with [Flutter](https://flutter.dev/)
 - Game engine powered by [Flame](https://flame-engine.org/)
 - Audio support via [flame_audio](https://pub.dev/packages/flame_audio)
+- App Icon via [IconKitchen](https://icon.kitchen/i/H4sIAAAAAAAAA0VQwU7DMAz9FWSuAzXrNkRvgABx3m4IITdx2kppU5K00zTt37FT0HKI45en5_d8hhndRBGqM9jmxTsfoILbjUa7LWAF9RVTu7UqibExPjcClErVj-sMvGXA5pOBQ5ccMfYUaMCbfet9opB_PrQfoEphopVMdN2IIcn4SFzAkMXJJaZ2mQg6-PE7_kwYCC5i6HAaRbkJaDoahFk37_-N6CQ_5jyFeCpsudlJEpUzoMK1ZCjuNw8LsqRiZRwasVyqLTeppZ4MVBZdZKN1s28xj9Vd0EwT76_Wkk48CmKLxh9FpPdmcrLOT9YzwXdGkvjI95FqvnvUS4dJt_mV5lz-6GmWLTk83XEOjvx1-QXK8eqPowEAAA)
 
 ---
 

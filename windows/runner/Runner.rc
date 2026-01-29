@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.game1" "\0"
-            VALUE "FileDescription", "game1" "\0"
+            VALUE "CompanyName", "F3 Software" "\0"
+            VALUE "FileDescription", "Arena Shooter" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "game1" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 com.game1. All rights reserved." "\0"
-            VALUE "OriginalFilename", "game1.exe" "\0"
-            VALUE "ProductName", "game1" "\0"
+            VALUE "InternalName", "arena_shooter" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 F3 Software. All rights reserved." "\0"
+            VALUE "OriginalFilename", "arena_shooter.exe" "\0"
+            VALUE "ProductName", "Arena Shooter" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

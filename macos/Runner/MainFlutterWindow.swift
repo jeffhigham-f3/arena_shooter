@@ -11,9 +11,9 @@ class MainFlutterWindow: NSWindow {
     RegisterGeneratedPlugins(registry: flutterViewController)
 
     super.awakeFromNib()
-    
+
     // Set window properties for game
-    self.title = "Game1"
+    self.title = "Arena Shooter"
     self.setContentSize(NSSize(width: 900, height: 700))
     self.center()
     self.styleMask.insert(.resizable)
