@@ -71,10 +71,10 @@ class GameConfig {
 
   // Current difficulty settings (can be changed at runtime)
   static DifficultySettings _difficultySettings = DifficultySettings.normal;
-  
+
   /// Get current difficulty settings
   static DifficultySettings get difficultySettings => _difficultySettings;
-  
+
   /// Set difficulty
   static void setDifficulty(Difficulty difficulty) {
     _difficultySettings = DifficultySettings.fromDifficulty(difficulty);
@@ -84,17 +84,21 @@ class GameConfig {
   static const String gameTitle = 'Arena Shooter';
   static const double gameHeight = 600; // Fixed height
   static double _gameWidth = 800; // Dynamic width based on screen aspect ratio
-  
+
   /// Get current game width (dynamic based on screen)
   static double get gameWidth => _gameWidth;
-  
+
   /// Set game width based on screen aspect ratio
   static void setGameWidth(double width) {
     _gameWidth = width;
   }
-  
+
   /// Calculate game width from screen dimensions
   static double calculateGameWidth(double screenWidth, double screenHeight) {
+    // Guard against invalid dimensions (division by zero)
+    if (screenHeight <= 0 || screenWidth <= 0) {
+      return 800; // default fallback width
+    }
     final aspectRatio = screenWidth / screenHeight;
     return gameHeight * aspectRatio;
   }
@@ -103,7 +107,8 @@ class GameConfig {
   static const double playerSpeed = 200.0;
   static const double playerSize = 50.0;
   static int get playerMaxHealth => _difficultySettings.playerMaxHealth;
-  static double get playerInvincibilityDuration => _difficultySettings.playerInvincibilityDuration;
+  static double get playerInvincibilityDuration =>
+      _difficultySettings.playerInvincibilityDuration;
 
   // Bullet settings
   static const double bulletSpeed = 400.0;
@@ -121,9 +126,12 @@ class GameConfig {
   static const int chaserScore = 10;
 
   // Chaser settings with difficulty applied
-  static double get chaserSpeed => _baseChaserSpeed * _difficultySettings.enemySpeedMultiplier;
-  static int get chaserHealth => (_baseChaserHealth * _difficultySettings.enemyHealthMultiplier).ceil();
-  static int get chaserDamage => (_baseChaserDamage * _difficultySettings.enemyDamageMultiplier).round();
+  static double get chaserSpeed =>
+      _baseChaserSpeed * _difficultySettings.enemySpeedMultiplier;
+  static int get chaserHealth =>
+      (_baseChaserHealth * _difficultySettings.enemyHealthMultiplier).ceil();
+  static int get chaserDamage =>
+      (_baseChaserDamage * _difficultySettings.enemyDamageMultiplier).round();
 
   // Base shooter enemy settings (before difficulty multipliers)
   static const double _baseShooterSpeed = 60.0;
@@ -134,26 +142,36 @@ class GameConfig {
   static const double shooterPreferredDistance = 200.0;
 
   // Shooter settings with difficulty applied
-  static double get shooterSpeed => _baseShooterSpeed * _difficultySettings.enemySpeedMultiplier;
-  static int get shooterHealth => (_baseShooterHealth * _difficultySettings.enemyHealthMultiplier).ceil();
-  static int get shooterDamage => (_baseShooterDamage * _difficultySettings.enemyDamageMultiplier).round();
+  static double get shooterSpeed =>
+      _baseShooterSpeed * _difficultySettings.enemySpeedMultiplier;
+  static int get shooterHealth =>
+      (_baseShooterHealth * _difficultySettings.enemyHealthMultiplier).ceil();
+  static int get shooterDamage =>
+      (_baseShooterDamage * _difficultySettings.enemyDamageMultiplier).round();
 
   // Wave settings
   static const double waveStartDelay = 2.0; // seconds before first wave
   static const double wavePauseDuration = 3.0; // seconds between waves
-  static const double _baseEnemySpawnDelay = 0.5; // seconds between enemy spawns
-  static double get enemySpawnDelay => _baseEnemySpawnDelay / _difficultySettings.spawnRateMultiplier;
-  
+  static const double _baseEnemySpawnDelay =
+      0.5; // seconds between enemy spawns
+  static double get enemySpawnDelay =>
+      _baseEnemySpawnDelay / _difficultySettings.spawnRateMultiplier;
+
   static const int _baseChaseCount = 5; // chasers in wave 1
   static const int _baseShooterCount = 0; // shooters in wave 1
-  static int get baseChaseCount => (_baseChaseCount * _difficultySettings.spawnRateMultiplier).round();
+  static int get baseChaseCount =>
+      (_baseChaseCount * _difficultySettings.spawnRateMultiplier).round();
   static int get baseShooterCount => _baseShooterCount;
-  
+
   static const int _baseChaserIncreasePerWave = 2;
   static const int _baseShooterIncreasePerWave = 2;
-  static int get chaserIncreasePerWave => (_baseChaserIncreasePerWave * _difficultySettings.spawnRateMultiplier).round();
-  static int get shooterIncreasePerWave => (_baseShooterIncreasePerWave * _difficultySettings.spawnRateMultiplier).round();
-  
+  static int get chaserIncreasePerWave =>
+      (_baseChaserIncreasePerWave * _difficultySettings.spawnRateMultiplier)
+          .round();
+  static int get shooterIncreasePerWave =>
+      (_baseShooterIncreasePerWave * _difficultySettings.spawnRateMultiplier)
+          .round();
+
   static const int shooterStartWave = 2; // wave when shooters start appearing
 
   // Physics settings

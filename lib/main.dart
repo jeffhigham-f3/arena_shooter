@@ -64,6 +64,14 @@ class _GamePageState extends State<GamePage> {
           // Calculate game width based on screen aspect ratio
           final screenWidth = constraints.maxWidth;
           final screenHeight = constraints.maxHeight;
+
+          // Guard against invalid constraints (can be 0 on first frame in release mode)
+          if (screenWidth <= 0 || screenHeight <= 0) {
+            return const Center(
+              child: CircularProgressIndicator(color: Color(0xFF4CAF50)),
+            );
+          }
+
           final gameWidth = GameConfig.calculateGameWidth(
             screenWidth,
             screenHeight,
