@@ -32,6 +32,7 @@ Arena Shooter is an action-packed survival game where you control a player chara
 - [Development](#development)
 - [Platform Support](#platform-support)
 - [Contributing](#contributing)
+- [Privacy](#privacy)
 - [License](#license)
 
 ## 🔧 Requirements
@@ -120,14 +121,14 @@ flutter build linux
 
 ## 🎯 Controls
 
-### Desktop (Keyboard)
+### Desktop/Web (Keyboard)
 
 - **Movement**: `W` `A` `S` `D` or Arrow Keys
-- **Aim**: Mouse cursor position
-- **Shoot**: Left Mouse Button or `Space`
-- **Pause**: `P` or `Escape`
+- **Aim**: Automatic (aims in movement direction)
+- **Shoot**: `Space`
+- **Pause**: Pause button in HUD
 
-### Mobile/Web (Touch)
+### Mobile (Touch)
 
 - **Movement**: Left joystick (virtual D-pad)
 - **Aim & Shoot**: Right joystick (aim direction determines shooting direction)
@@ -254,9 +255,9 @@ Arena Shooter supports the following platforms:
 
 ### Platform-Specific Notes
 
-- **Web**: Touch controls are automatically enabled
-- **Mobile**: Landscape orientation is locked for optimal gameplay
-- **Desktop**: Keyboard and mouse controls are available
+- **Web**: Keyboard controls only (same as desktop)
+- **Mobile**: Touch controls with virtual joysticks; landscape orientation is locked for optimal gameplay
+- **Desktop**: Keyboard controls are available
 
 ## 🤝 Contributing
 
@@ -274,6 +275,10 @@ Contributions are welcome! Please follow these guidelines:
 - Use meaningful variable and function names
 - Add comments for complex logic
 - Keep functions focused and single-purpose
+
+## 🔒 Privacy
+
+Arena Shooter respects your privacy. The app does not collect, store, or transmit any personal or usage data. For full details, see our [Privacy Policy](privacy.md).
 
 ## 📄 License
 
